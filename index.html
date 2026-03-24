@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoDrive</title>
+    <meta name="description" content="Transforme seu carro fumacento em um veículo sustentável! Um jogo de cliques 100% ecológico.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- HUD -->
+        <div id="hud" class="hidden">
+            <div class="hud-item coins">
+                <span class="icon">🪙</span>
+                <span id="coin-count">0</span>
+            </div>
+            <div class="hud-item sustainability">
+                <div class="bar-container">
+                    <div id="sus-bar" class="bar-fill"></div>
+                </div>
+                <span id="sus-text">0%</span>
+            </div>
+            <button id="btn-workshop" class="hud-btn">🛠️ Oficina</button>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Screens -->
+        <!-- Start Screen -->
+        <div id="screen-start" class="screen">
+            <h1>EcoDrive 🚗</h1>
+            <p>Sua missão é transformar este carro antigo e altamente poluente em um modelo sustentável.</p>
+            <p><strong>Clique nas moedas para coletá-las e use a oficina!</strong></p>
+            <button id="btn-start" class="btn-primary">Começar a Limpar o Mundo</button>
+        </div>
+
+        <!-- Workshop Screen -->
+        <div id="screen-workshop" class="screen hidden">
+            <h2>Oficina Sustentável</h2>
+            <div class="upgrades-list">
+                <div class="upgrade-item" id="up-1">
+                    <div class="up-info">
+                        <h3>Filtro de Escapamento</h3>
+                        <p>A fumaça preta diminui. Moedas surgem +20% mais rápido.</p>
+                    </div>
+                    <button class="btn-buy" data-cost="35" data-id="1">35 🪙</button>
+                </div>
+                <div class="upgrade-item" id="up-2">
+                    <div class="up-info">
+                        <h3>Pneus Ecológicos</h3>
+                        <p>O som e rodagem melhoram. Moedas valem em dobro (x2).</p>
+                    </div>
+                    <button class="btn-buy" data-cost="100" data-id="2">100 🪙</button>
+                </div>
+                <div class="upgrade-item" id="up-5">
+                    <div class="up-info">
+                        <h3>Materiais Sustentáveis</h3>
+                        <p>Uso de bioplásticos e tecidos reciclados. Moedas valem em dobro (x2 acumulativo).</p>
+                    </div>
+                    <button class="btn-buy" data-cost="250" data-id="5">250 🪙</button>
+                </div>
+                <div class="upgrade-item" id="up-3">
+                    <div class="up-info">
+                        <h3>Motor Híbrido</h3>
+                        <p>Visual moderno e pouca fumaça. Moedas surgem +50% mais rápido.</p>
+                    </div>
+                    <button class="btn-buy" data-cost="400" data-id="3">400 🪙</button>
+                </div>
+                <div class="upgrade-item" id="up-4">
+                    <div class="up-info">
+                        <h3>Bateria 100% Elétrica 🔋</h3>
+                        <p>O nível máximo de sustentabilidade. O mundo agradece!</p>
+                    </div>
+                    <button class="btn-buy" data-cost="600" data-id="4">600 🪙</button>
+                </div>
+            </div>
+            <button id="btn-close-workshop" class="btn-secondary">Voltar ao Jogo</button>
+        </div>
+
+        <!-- Ending Screen -->
+        <div id="screen-ending" class="screen hidden">
+            <h1 class="victory-title">Vitória! ⚡</h1>
+            <p>Parabéns! Você ajudou a construir um futuro sustentável!</p>
+            <p>A cidade está limpa, o ar puro e seu carro é 100% elétrico.</p>
+            <div class="emoji-art">🏙️ 🌳 ⚡ 🚲</div>
+            <button id="btn-restart" class="btn-primary">Jogar Novamente</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
