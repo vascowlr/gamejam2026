@@ -22,72 +22,97 @@
                 </div>
                 <span id="sus-text">0%</span>
             </div>
-            <button id="btn-workshop" class="hud-btn">🛠️ Oficina</button>
+            <div class="hud-controls">
+                <button id="btn-alert" class="hud-btn alert-btn hidden">⚠️ <span data-i18n="alert">ALERTA!</span></button>
+                <button id="btn-pause" class="hud-btn">⏸️</button>
+                <button id="btn-workshop" class="hud-btn">🛠️ <span data-i18n="workshop">Oficina</span></button>
+            </div>
         </div>
 
         <!-- Canvas -->
         <canvas id="gameCanvas"></canvas>
 
         <!-- Screens -->
+        
+        <!-- Pause Screen -->
+        <div id="screen-pause" class="screen hidden">
+            <h2 data-i18n="pause_title">Jogo Pausado</h2>
+            <div class="menu-options">
+                <button id="btn-resume" class="btn-primary" data-i18n="btn_resume">Continuar</button>
+                <button id="btn-restart-action" class="btn-secondary" data-i18n="btn_restart">Reiniciar</button>
+                <button id="btn-toggle-lang" class="btn-secondary">🌍 Language: EN</button>
+                <button id="btn-dev-mode" class="btn-dev">🛠️ DEV: OFF</button>
+            </div>
+        </div>
+
+        <!-- Minigame Screen -->
+
+        <div id="screen-minigame" class="screen hidden">
+            <div id="minigame-content">
+                <!-- Content will be injected by JS -->
+            </div>
+        </div>
+
         <!-- Start Screen -->
         <div id="screen-start" class="screen">
-            <h1>EcoDrive 🚗</h1>
-            <p>Sua missão é transformar este carro antigo e altamente poluente em um modelo sustentável.</p>
-            <p><strong>Clique nas moedas para coletá-las e use a oficina!</strong></p>
-            <button id="btn-start" class="btn-primary">Começar a Limpar o Mundo</button>
+            <h1 data-i18n="title">EcoDrive 🚗</h1>
+            <p data-i18n="start_desc">Sua missão é transformar este carro antigo e altamente poluente em um modelo sustentável.</p>
+            <p><strong data-i18n="start_instr">Clique nas moedas para coletá-las e use a oficina!</strong></p>
+            <button id="btn-start" class="btn-primary" data-i18n="btn_start">Começar a Limpar o Mundo</button>
         </div>
 
         <!-- Workshop Screen -->
         <div id="screen-workshop" class="screen hidden">
-            <h2>Oficina Sustentável</h2>
+            <h2 data-i18n="workshop_title">Oficina Sustentável</h2>
             <div class="upgrades-list">
                 <div class="upgrade-item" id="up-1">
                     <div class="up-info">
-                        <h3>Filtro de Escapamento</h3>
-                        <p>A fumaça preta diminui. Moedas surgem +20% mais rápido.</p>
+                        <h3 data-i18n="up1_name">Filtro de Escapamento</h3>
+                        <p data-i18n="up1_desc">A fumaça preta diminui. Moedas surgem +20% mais rápido.</p>
                     </div>
                     <button class="btn-buy" data-cost="35" data-id="1">35 🪙</button>
                 </div>
                 <div class="upgrade-item" id="up-2">
                     <div class="up-info">
-                        <h3>Pneus Ecológicos</h3>
-                        <p>O som e rodagem melhoram. Moedas valem em dobro (x2).</p>
+                        <h3 data-i18n="up2_name">Pneus Ecológicos</h3>
+                        <p data-i18n="up2_desc">O som e rodagem melhoram. Moedas valem em dobro (x2).</p>
                     </div>
                     <button class="btn-buy" data-cost="100" data-id="2">100 🪙</button>
                 </div>
                 <div class="upgrade-item" id="up-5">
                     <div class="up-info">
-                        <h3>Materiais Sustentáveis</h3>
-                        <p>Uso de bioplásticos e tecidos reciclados. Moedas valem em dobro (x2 acumulativo).</p>
+                        <h3 data-i18n="up5_name">Materiais Sustentáveis</h3>
+                        <p data-i18n="up5_desc">Uso de bioplásticos e tecidos reciclados. Moedas valem em dobro (x2 acumulativo).</p>
                     </div>
                     <button class="btn-buy" data-cost="250" data-id="5">250 🪙</button>
                 </div>
                 <div class="upgrade-item" id="up-3">
                     <div class="up-info">
-                        <h3>Motor Híbrido</h3>
-                        <p>Visual moderno e pouca fumaça. Moedas surgem +50% mais rápido.</p>
+                        <h3 data-i18n="up3_name">Motor Híbrido</h3>
+                        <p data-i18n="up3_desc">Visual moderno e pouca fumaça. Moedas surgem +50% mais rápido.</p>
                     </div>
                     <button class="btn-buy" data-cost="400" data-id="3">400 🪙</button>
                 </div>
                 <div class="upgrade-item" id="up-4">
                     <div class="up-info">
-                        <h3>Bateria 100% Elétrica 🔋</h3>
-                        <p>O nível máximo de sustentabilidade. O mundo agradece!</p>
+                        <h3 data-i18n="up4_name">Bateria 100% Elétrica 🔋</h3>
+                        <p data-i18n="up4_desc">O nível máximo de sustentabilidade. O mundo agradece!</p>
                     </div>
                     <button class="btn-buy" data-cost="600" data-id="4">600 🪙</button>
                 </div>
             </div>
-            <button id="btn-close-workshop" class="btn-secondary">Voltar ao Jogo</button>
+            <button id="btn-close-workshop" class="btn-secondary" data-i18n="btn_back">Voltar ao Jogo</button>
         </div>
 
         <!-- Ending Screen -->
         <div id="screen-ending" class="screen hidden">
-            <h1 class="victory-title">Vitória! ⚡</h1>
-            <p>Parabéns! Você ajudou a construir um futuro sustentável!</p>
-            <p>A cidade está limpa, o ar puro e seu carro é 100% elétrico.</p>
+            <h1 class="victory-title" data-i18n="victory">Vitória! ⚡</h1>
+            <p data-i18n="victory_desc">Parabéns! Você ajudou a construir um futuro sustentável!</p>
+            <p data-i18n="victory_subdesc">A cidade está limpa, o ar puro e seu carro é 100% elétrico.</p>
             <div class="emoji-art">🏙️ 🌳 ⚡ 🚲</div>
-            <button id="btn-restart" class="btn-primary">Jogar Novamente</button>
+            <button id="btn-restart" class="btn-primary" data-i18n="btn_play_again">Jogar Novamente</button>
         </div>
+
     </div>
 
     <script src="game.js"></script>

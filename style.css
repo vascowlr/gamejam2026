@@ -95,6 +95,7 @@ canvas {
     margin-bottom: 20px;
     background: -webkit-linear-gradient(45deg, #10b981, #3b82f6);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
@@ -161,6 +162,27 @@ strong {
     align-items: flex-start;
     z-index: 5;
     pointer-events: none;
+}
+
+.hud-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.alert-btn {
+    background-color: #ef4444;
+    animation: pulseRed 1s infinite alternate;
+    font-weight: 800;
+    pointer-events: auto;
+}
+
+.alert-btn:hover {
+    background-color: #dc2626;
+}
+
+@keyframes pulseRed {
+    from { transform: scale(1); box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+    to { transform: scale(1.1); box-shadow: 0 0 25px rgba(239, 68, 68, 0.9); }
 }
 
 .hud-item {
@@ -330,6 +352,185 @@ strong {
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-15px); }
+}
+
+/* Minigame Styles */
+#minigame-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.mg-title {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.mg-description {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #cbd5e1;
+}
+
+/* Quiz & Choice */
+.quiz-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+.quiz-opt {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.quiz-opt:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateX(5px);
+}
+
+.quiz-opt.correct {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: #10b981;
+}
+
+.quiz-opt.wrong {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: #ef4444;
+}
+
+/* Waste Sorting */
+.sort-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    gap: 10px;
+}
+
+.bin {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 2px dashed rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.bin:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--primary-color);
+}
+
+.bin-icon {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.bin-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.trash-item {
+    font-size: 3rem;
+    margin: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.trash-item:hover {
+    transform: scale(1.2);
+}
+
+/* Planting */
+.garden-area {
+    width: 100%;
+    height: 150px;
+    background: #5d4037;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.hole {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50%;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.seed-anim {
+    position: absolute;
+    font-size: 1.5rem;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: fallDown 0.8s forwards;
+}
+
+@keyframes fallDown {
+    to { top: 55%; opacity: 0.8; }
+}
+
+.plant-anim {
+    position: absolute;
+    font-size: 2.5rem;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: growBody 1.5s forwards;
+}
+
+@keyframes growBody {
+    from { transform: translateX(-50%) scale(0); }
+    to { transform: translateX(-50%) scale(1); }
+}
+
+/* Pause Menu */
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#btn-pause {
+    font-size: 1.5rem;
+}
+
+.btn-dev {
+    background: #1e293b;
+    color: #fca5a5;
+    border: 1px dashed #fca5a5;
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-dev.active {
+    background: #450a0a;
+    color: #f87171;
+    border: 1px solid #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
 }
 
 @media (max-width: 768px) {
