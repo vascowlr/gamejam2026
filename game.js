@@ -30,12 +30,16 @@ const btnPause = document.getElementById('btn-pause');
 const btnResume = document.getElementById('btn-resume');
 const btnRestartAction = document.getElementById('btn-restart-action');
 const btnToggleLang = document.getElementById('btn-toggle-lang');
-const btnDevMode = document.getElementById('btn-dev-mode');
+const btnToggleLangStart = document.getElementById('btn-toggle-lang-start');
 const btnBuys = document.querySelectorAll('.btn-buy');
 
 const uiMinigame = document.getElementById('screen-minigame');
 const uiPause = document.getElementById('screen-pause');
+const uiConfirm = document.getElementById('screen-confirm');
 const elMinigameContent = document.getElementById('minigame-content');
+
+const btnConfirmYes = document.getElementById('btn-confirm-yes');
+const btnConfirmNo = document.getElementById('btn-confirm-no');
 
 // Game State Enum
 const STATE = {
@@ -51,8 +55,7 @@ let gameState = STATE.START;
 let gameData = {
     coins: 0,
     upgrades: { 1: false, 2: false, 3: false, 4: false, 5: false },
-    lang: 'pt',
-    dev: false
+    lang: 'pt'
 };
 
 // Local storage init
@@ -64,7 +67,6 @@ if (localSave) {
         if (typeof parsed.coins === 'number') gameData.coins = parsed.coins;
         if (parsed.upgrades) gameData.upgrades = parsed.upgrades;
         if (parsed.lang) gameData.lang = parsed.lang;
-        if (typeof parsed.dev === 'boolean') gameData.dev = parsed.dev;
     } catch(e) {
         console.error("Failed to parse save", e);
     }
@@ -112,7 +114,42 @@ const I18N = {
         plant_done: "CONCLUÍDO! ✨",
         quiz_title: "Desafio Eco-Conhecimento",
         choice_title: "Escolha Sustentável",
-        lang_toggle_label: "🌍 Idioma: Português"
+        lang_toggle_label: "🌍 Idioma: Português",
+        installed: "Instalado",
+        metal: "Metal",
+        glass: "Vidro",
+        organic: "Orgânico",
+        trash_items: [
+            { i: "📦", t: "paper" }, { i: "🥤", t: "plastic" }, { i: "🥫", t: "metal" },
+            { i: "🍼", t: "glass" }, { i: "🍌", t: "organic" }, { i: "🗞️", t: "paper" },
+            { i: "🧴", t: "plastic" }, { i: "🍴", t: "metal" }, { i: "🍎", t: "organic" }
+        ],
+        questions: [
+            { q: "Qual fonte de energia é mais limpa?", o: ["Carvão", "Energia Solar", "Petróleo"], a: 1 },
+            { q: "O que significa Reciclar?", o: ["Jogar fora", "Reutilizar material", "Queimar lixo"], a: 1 },
+            { q: "Qual desses economiza mais água?", o: ["Banho demorado", "Fechar a torneira", "Lavar calçada"], a: 1 },
+            { q: "O CO2 é um gás de...", o: ["Efeito Estufa", "Respiração", "Cozinha"], a: 0 },
+            { q: "Carros elétricos emitem...", o: ["Muita fumaça", "Zero emissão local", "Óleo diesel"], a: 1 },
+            { q: "Papel vem de onde?", o: ["Plástico", "Árvores", "Pedras"], a: 1 },
+            { q: "Qual cor representa o plástico na reciclagem?", o: ["Verde", "Vermelho", "Amarelo"], a: 1 },
+            { q: "Lixo orgânico serve para...", o: ["Fazer adubo", "Fazer metal", "Nada"], a: 0 },
+            { q: "Preservar a natureza é...", o: ["Bebê-la", "Cuidar dela", "Ignorá-la"], a: 1 }
+        ],
+        choices: [
+            { q: "Qual o transporte mais sustentável?", o: [{t:"🚗 Carro", s:false}, {t:"🚲 Bicicleta", s:true}] },
+            { q: "Para carregar compras use:", o: [{t:"🍀 Ecobag", s:true}, {t:"🛍️ Sacola Plástica", s:false}] },
+            { q: "Qual lâmpada economiza mais?", o: [{t:"💡 Incandescente", s:false}, {t:"⚡ LED", s:true}] },
+            { q: "Melhor forma de lavar o carro:", o: [{t:"🚿 Mangueira", s:false}, {t:"🪣 Balde", s:true}] },
+            { q: "Ao sair do quarto:", o: [{t:"🕯️ Apagar a luz", s:true}, {t:"🔆 Deixar ligada", s:false}] },
+            { q: "Onde descartar pilhas?", o: [{t:"🗑️ Lixo comum", s:false}, {t:"🔋 Coleta seletiva", s:true}] },
+            { q: "Qual o banho mais eco-amigável?", o: [{t:"⏳ Banho rápido", s:true}, {t:"🛀 Banheira cheia", s:false}] },
+            { q: "Melhor material para garrafas:", o: [{t:"🥤 Plástico", s:false}, {t:"🍼 Vidro/Alumínio", s:true}] },
+            { q: "Documentos e boletos:", o: [{t:"📧 Digital", s:true}, {t:"📄 Impresso", s:false}] }
+        ],
+        confirm_title: "Tem certeza?",
+        confirm_desc: "Todo o seu progresso será perdido!",
+        confirm_yes: "Sim, Reiniciar",
+        confirm_no: "Não, Voltar"
     },
     en: {
         title: "EcoDrive 🚗",
@@ -155,7 +192,42 @@ const I18N = {
         plant_done: "DONE! ✨",
         quiz_title: "Eco-Knowledge Challenge",
         choice_title: "Sustainable Choice",
-        lang_toggle_label: "🌍 Language: English"
+        lang_toggle_label: "🌍 Language: English",
+        installed: "Installed",
+        metal: "Metal",
+        glass: "Glass",
+        organic: "Organic",
+        trash_items: [
+            { i: "📦", t: "paper" }, { i: "🥤", t: "plastic" }, { i: "🥫", t: "metal" },
+            { i: "🍼", t: "glass" }, { i: "🍌", t: "organic" }, { i: "🗞️", t: "paper" },
+            { i: "🧴", t: "plastic" }, { i: "🍴", t: "metal" }, { i: "🍎", t: "organic" }
+        ],
+        questions: [
+            { q: "Which energy source is cleaner?", o: ["Coal", "Solar Energy", "Oil"], a: 1 },
+            { q: "What does Recycle mean?", o: ["Throw away", "Reuse material", "Burn trash"], a: 1 },
+            { q: "Which of these saves more water?", o: ["Long shower", "Turn off tap", "Wash sidewalk"], a: 1 },
+            { q: "CO2 is a gas that causes...", o: ["Greenhouse Effect", "Breathing", "Cooking"], a: 0 },
+            { q: "Electric cars emit...", o: ["A lot of smoke", "Zero local emissions", "Diesel oil"], a: 1 },
+            { q: "Where does paper come from?", o: ["Plastic", "Trees", "Stones"], a: 1 },
+            { q: "Which color represents plastic in recycling?", o: ["Green", "Red", "Yellow"], a: 1 },
+            { q: "Organic waste is used to...", o: ["Make fertilizer", "Make metal", "Nothing"], a: 0 },
+            { q: "Preserving nature is...", o: ["Drinking it", "Taking care of it", "Ignoring it"], a: 1 }
+        ],
+        choices: [
+            { q: "What is the most sustainable transport?", o: [{t:"🚗 Car", s:false}, {t:"🚲 Bicycle", s:true}] },
+            { q: "To carry groceries use:", o: [{t:"🍀 Ecobag", s:true}, {t:"🛍️ Plastic Bag", s:false}] },
+            { q: "Which bulb saves more?", o: [{t:"💡 Incandescent", s:false}, {t:"⚡ LED", s:true}] },
+            { q: "Best way to wash the car:", o: [{t:"🚿 Hose", s:false}, {t:"🪣 Bucket", s:true}] },
+            { q: "When leaving the room:", options: "🕯️ Turn off light", o: [{t:"🕯️ Turn off light", s:true}, {t:"🔆 Leave it on", s:false}] },
+            { q: "Where to dispose of batteries?", o: [{t:"🗑️ Common trash", s:false}, {t:"🔋 Collection point", s:true}] },
+            { q: "Which shower is more eco-friendly?", o: [{t:"⏳ Quick shower", s:true}, {t:"🛀 Full tub", s:false}] },
+            { q: "Best material for bottles:", o: [{t:"🥤 Plastic", s:false}, {t:"🍼 Glass/Aluminum", s:true}] },
+            { q: "Documents and bills:", o: [{t:"📧 Digital", s:true}, {t:"📄 Printed", s:false}] }
+        ],
+        confirm_title: "Are you sure?",
+        confirm_desc: "All your progress will be lost!",
+        confirm_yes: "Yes, Restart",
+        confirm_no: "No, Back"
     }
 };
 
@@ -168,12 +240,14 @@ function updateLanguage() {
         }
     });
     btnToggleLang.innerText = I18N[lang].lang_toggle_label;
+    if (btnToggleLangStart) btnToggleLangStart.innerText = I18N[lang].lang_toggle_label;
 }
 
 let currentSus = 0;
 let lastSus = 0;
 let alertActive = false;
-let currentMinigame = null;
+let pendingMinigame = null;
+let alertTimeout = null;
 
 let bgOffset = 0;
 let bgSpeed = 3;
@@ -272,13 +346,13 @@ class Car {
         this.w = 140;
         this.h = 60;
         this.x = cw * 0.2;
-        this.y = ch - ch * 0.22;
+        this.y = ch - ch * 0.16; // Lower position
         this.bounce = 0;
         this.wheelAngle = 0;
     }
 
     update(dt) {
-        this.y = ch - ch * 0.22; 
+        this.y = ch - ch * 0.16; 
         this.bounce = Math.sin(frameCount * 0.15) * 4;
         this.wheelAngle += bgSpeed * 0.05;
         
@@ -530,9 +604,11 @@ function updateWorkshopUI() {
         
         if (gameData.upgrades[id]) {
             itemDiv.classList.add('bought');
-            btn.innerText = 'Instalado';
+            btn.innerText = I18N[gameData.lang].installed;
             btn.disabled = true;
         } else {
+            itemDiv.classList.remove('bought'); // Important for reset
+            btn.innerText = `${cost} 🪙`; // Restore price text
             if (gameData.dev || gameData.coins >= cost) {
                 btn.disabled = false;
             } else {
@@ -575,6 +651,8 @@ function startMinigame(type, reward = 100) {
     gameState = STATE.MINIGAME;
     uiMinigame.classList.remove('hidden');
     uiHud.classList.add('hidden');
+    uiWorkshop.classList.add('hidden'); // Fix overlap
+    uiPause.classList.add('hidden'); // Fix overlap
     elMinigameContent.innerHTML = '';
     
     switch(type) {
@@ -585,7 +663,9 @@ function startMinigame(type, reward = 100) {
     }
 }
 
-function completeMinigame() {
+function completeMinigame(reward) {
+    if (reward !== undefined) currentReward = reward;
+    
     gameState = STATE.PLAYING;
     uiMinigame.classList.add('hidden');
     uiHud.classList.remove('hidden');
@@ -600,26 +680,71 @@ function completeMinigame() {
 
 function setupTrashGame() {
     const lang = gameData.lang;
-    elMinigameContent.innerHTML = `
-        <h2 class="mg-title">${I18N[lang].trash_title}</h2>
-        <p class="mg-description">${I18N[lang].trash_desc}</p>
-        <div id="trash-item" class="trash-item">📦</div>
-        <div class="sort-container">
-            <div class="bin" onclick="checkTrash('📦', 'paper')">
-                <span class="bin-icon">📄</span>
-                <span class="bin-label">${I18N[lang].paper}</span>
-            </div>
-            <div class="bin" onclick="checkTrash('📦', 'plastic')">
-                <span class="bin-icon">🥤</span>
-                <span class="bin-label">${I18N[lang].plastic}</span>
-            </div>
-        </div>
-    `;
-}
+    const itemsPool = I18N[lang].trash_items;
+    let selectedItems = itemsPool.sort(() => 0.5 - Math.random()).slice(0, 3);
+    let currentT = 0;
+    let errors = 0;
+    let isChecking = false;
 
-function checkTrash(item, type) {
-    // Para simplificar a interação direta por onclick no HTML injetado:
-    completeMinigame();
+    const renderT = () => {
+        isChecking = false;
+        let item = selectedItems[currentT];
+        elMinigameContent.innerHTML = `
+            <h2 class="mg-title">${I18N[lang].trash_title}</h2>
+            <p class="mg-description">${currentT + 1} / 3</p>
+            <div id="trash-item" class="trash-item">${item.i}</div>
+            <div class="sort-container" id="bins-group">
+                <div class="bin" data-type="paper" onclick="window.checkTrash('${item.t}', 'paper', this)">
+                    <span class="bin-icon">📄</span>
+                    <span class="bin-label">${I18N[lang].paper}</span>
+                </div>
+                <div class="bin" data-type="plastic" onclick="window.checkTrash('${item.t}', 'plastic', this)">
+                    <span class="bin-icon">🥤</span>
+                    <span class="bin-label">${I18N[lang].plastic}</span>
+                </div>
+                <div class="bin" data-type="metal" onclick="window.checkTrash('${item.t}', 'metal', this)">
+                    <span class="bin-icon">🥫</span>
+                    <span class="bin-label">${I18N[lang].metal}</span>
+                </div>
+                <div class="bin" data-type="glass" onclick="window.checkTrash('${item.t}', 'glass', this)">
+                    <span class="bin-icon">🍼</span>
+                    <span class="bin-label">${I18N[lang].glass}</span>
+                </div>
+                <div class="bin" data-type="organic" onclick="window.checkTrash('${item.t}', 'organic', this)">
+                    <span class="bin-icon">🍌</span>
+                    <span class="bin-label">${I18N[lang].organic}</span>
+                </div>
+            </div>
+        `;
+    };
+
+    window.checkTrash = (correct, chosen, el) => {
+        if (isChecking) return;
+        isChecking = true;
+        document.getElementById('bins-group').classList.add('is-checking');
+
+        if (correct === chosen) {
+            el.classList.add('correct');
+        } else {
+            errors++;
+            el.classList.add('wrong');
+            const bins = document.querySelectorAll('.bin');
+            bins.forEach(b => { if(b.dataset.type === correct) b.classList.add('correct'); });
+        }
+
+        setTimeout(() => {
+            currentT++;
+            if (currentT >= 3) {
+                let finalReward = 100;
+                if (currentReward === 50) finalReward = 50; // Trash game is usually 50
+                if (errors == 1) finalReward = Math.min(finalReward, 50);
+                else if (errors == 2) finalReward = Math.min(finalReward, 25);
+                else if (errors >= 3) finalReward = 0;
+                completeMinigame(finalReward);
+            } else renderT();
+        }, 1500);
+    };
+    renderT();
 }
 
 function setupPlantGame() {
@@ -653,93 +778,111 @@ function setupPlantGame() {
             inst.innerHTML = I18N[lang].plant_done;
             seed.classList.add('hidden');
             plant.classList.remove('hidden');
+            hole.classList.add('hidden'); // Close the hole
             setTimeout(completeMinigame, 1500);
         }
     };
 }
 
 function setupQuizGame() {
-    const questions = [
-        { q: "Qual fonte de energia é mais limpa?", o: ["Carvão", "Energia Solar", "Petróleo"], a: 1 },
-        { q: "O que significa Reciclar?", o: ["Jogar fora", "Reutilizar material", "Queimar lixo"], a: 1 },
-        { q: "Qual desses economiza mais água?", o: ["Banho demorado", "Fechar a torneira", "Lavar calçada"], a: 1 },
-        { q: "O CO2 é um gás de...", o: ["Efeito Estufa", "Respiração", "Cozinha"], a: 0 },
-        { q: "Carros elétricos emitem...", o: ["Muita fumaça", "Zero emissão local", "Óleo diesel"], a: 1 },
-        { q: "Papel vem de onde?", o: ["Plástico", "Árvores", "Pedras"], a: 1 },
-        { q: "Qual cor representa o plástico na reciclagem?", o: ["Verde", "Vermelho", "Amarelo"], a: 1 },
-        { q: "Lixo orgânico serve para...", o: ["Fazer adubo", "Fazer metal", "Nada"], a: 0 },
-        { q: "Preservar a natureza é...", o: ["Bebê-la", "Cuidar dela", "Ignorá-la"], a: 1 }
-    ];
+    const lang = gameData.lang;
+    const questions = I18N[lang].questions;
     let selected = questions.sort(() => 0.5 - Math.random()).slice(0, 3);
     let currentQ = 0;
+    let errors = 0;
+    let isChecking = false;
 
     const renderQ = () => {
-        const lang = gameData.lang;
+        isChecking = false;
         let q = selected[currentQ];
         elMinigameContent.innerHTML = `
             <h2 class="mg-title">${I18N[lang].quiz_title}</h2>
             <p class="mg-description">${currentQ + 1} / 3</p>
             <p><strong>${q.q}</strong></p>
-            <div class="quiz-options">
-                ${q.o.map((opt, i) => `<div class="quiz-opt" onclick="window.answerQuiz(${i})">${opt}</div>`).join('')}
+            <div class="quiz-options ${isChecking ? 'is-checking' : ''}" id="quiz-group">
+                ${q.o.map((opt, i) => `<div class="quiz-opt" data-idx="${i}" onclick="window.answerQuiz(${i}, this)">${opt}</div>`).join('')}
             </div>
         `;
     };
 
-    window.answerQuiz = (idx) => {
-        if(idx === selected[currentQ].a) {
-            currentQ++;
-            if(currentQ >= 3) completeMinigame();
-            else renderQ();
+    window.answerQuiz = (idx, el) => {
+        if (isChecking) return;
+        isChecking = true;
+        document.getElementById('quiz-group').classList.add('is-checking');
+
+        let q = selected[currentQ];
+        if (idx === q.a) {
+            el.classList.add('correct');
         } else {
-            alert("Tente novamente!");
+            errors++;
+            el.classList.add('wrong');
+            document.querySelector(`.quiz-opt[data-idx="${q.a}"]`).classList.add('correct');
         }
+
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ >= 3) {
+                let finalReward = 100;
+                if (errors == 1) finalReward = 50;
+                else if (errors == 2) finalReward = 25;
+                else if (errors >= 3) finalReward = 0;
+                completeMinigame(finalReward);
+            } else renderQ();
+        }, 2000);
     };
     renderQ();
 }
 
 function setupChoiceGame() {
-    const choicesPool = [
-        { q: "Qual o transporte mais sustentável?", o: [{t:"🚗 Carro", s:false}, {t:"🚲 Bicicleta", s:true}] },
-        { q: "Para carregar compras use:", o: [{t:"🍀 Ecobag", s:true}, {t:"🛍️ Sacola Plástica", s:false}] },
-        { q: "Qual lâmpada economiza mais?", o: [{t:"💡 Incandescente", s:false}, {t:"⚡ LED", s:true}] },
-        { q: "Melhor forma de lavar o carro:", o: [{t:"🚿 Mangueira", s:false}, {t:"🪣 Balde", s:true}] },
-        { q: "Ao sair do quarto:", o: [{t:"🕯️ Apagar a luz", s:true}, {t:"🔆 Deixar ligada", s:false}] },
-        { q: "Onde descartar pilhas?", o: [{t:"🗑️ Lixo comum", s:false}, {t:"🔋 Coleta seletiva", s:true}] },
-        { q: "Qual o banho mais eco-amigável?", o: [{t:"⏳ Banho rápido", s:true}, {t:"🛀 Banheira cheia", s:false}] },
-        { q: "Melhor material para garrafas:", o: [{t:"🥤 Plástico", s:false}, {t:"🍼 Vidro/Alumínio", s:true}] },
-        { q: "Documentos e boletos:", o: [{t:"📧 Digital", s:true}, {t:"📄 Impresso", s:false}] }
-    ];
+    const lang = gameData.lang;
+    const choicesPool = I18N[lang].choices;
 
     let selected = choicesPool.sort(() => 0.5 - Math.random()).slice(0, 3);
     let currentC = 0;
+    let errors = 0;
+    let isChecking = false;
 
     const renderC = () => {
+        isChecking = false;
         const lang = gameData.lang;
         let c = selected[currentC];
         elMinigameContent.innerHTML = `
             <h2 class="mg-title">${I18N[lang].choice_title}</h2>
             <p class="mg-description">${currentC + 1} / 3</p>
             <p><strong>${c.q}</strong></p>
-            <div class="quiz-options">
-                ${c.o.map((opt, i) => `<div class="quiz-opt" onclick="window.pickChoice(${opt.s})">${opt.t}</div>`).join('')}
+            <div class="quiz-options ${isChecking ? 'is-checking' : ''}" id="choice-group">
+                ${c.o.map((opt, i) => `<div class="quiz-opt" data-score="${opt.s}" onclick="window.pickChoice(${opt.s}, this)">${opt.t}</div>`).join('')}
             </div>
         `;
     };
 
-    window.pickChoice = (isSus) => {
-        if(isSus) {
-            currentC++;
-            if(currentC >= 3) completeMinigame();
-            else renderC();
+    window.pickChoice = (isSus, el) => {
+        if (isChecking) return;
+        isChecking = true;
+        document.getElementById('choice-group').classList.add('is-checking');
+
+        if (isSus) {
+            el.classList.add('correct');
         } else {
-            alert("Essa opção prejudica o planeta! Tente a outra.");
+            errors++;
+            el.classList.add('wrong');
+            document.querySelectorAll('.quiz-opt').forEach(b => { if(b.dataset.score === "true") b.classList.add('correct'); });
         }
+
+        setTimeout(() => {
+            currentC++;
+            if (currentC >= 3) {
+                let finalReward = 100;
+                if (errors == 1) finalReward = 50;
+                else if (errors == 2) finalReward = 25;
+                else if (errors >= 3) finalReward = 0;
+                completeMinigame(finalReward);
+            } else renderC();
+        }, 2000);
     };
     renderC();
 }
 
-let pendingMinigame = null;
 
 // Event Listeners
 btnAlert.addEventListener('click', () => {
@@ -785,7 +928,17 @@ btnToggleLang.addEventListener('click', () => {
     gameData.lang = gameData.lang === 'pt' ? 'en' : 'pt';
     saveGame();
     updateLanguage();
+    updateWorkshopUI(); // Update 'Installed' text
 });
+
+if (btnToggleLangStart) {
+    btnToggleLangStart.addEventListener('click', () => {
+        gameData.lang = gameData.lang === 'pt' ? 'en' : 'pt';
+        saveGame();
+        updateLanguage();
+        updateWorkshopUI();
+    });
+}
 
 btnPause.addEventListener('click', () => {
     if (gameState === STATE.PLAYING) {
@@ -814,41 +967,56 @@ function resetGame() {
     uiHud.classList.add('hidden');
     uiStart.classList.remove('hidden');
     
+    if (alertTimeout) clearTimeout(alertTimeout);
+    alertTimeout = null;
+    pendingMinigame = null;
+    alertActive = false;
+    btnAlert.classList.add('hidden');
+    
+    bgOffset = 0;
+    frameCount = 0;
+    currentSus = 0;
+    lastSus = 0;
+    coinMultiplier = 1;
+    coinSpawnInterval = 100;
+    
     coinsArray = [];
     particlesArray = [];
     cloudsArray = [];
     treesArray = [];
     housesArray = [];
-    alertActive = false;
-    btnAlert.classList.add('hidden');
     
     player = new Car();
     updateStats();
+    updateWorkshopUI(); 
     updateLanguage();
-    
-    btnDevMode.classList.toggle('active', gameData.dev);
-    btnDevMode.innerText = `🛠️ DEV: ${gameData.dev ? 'ON' : 'OFF'}`;
 }
 
-btnRestartAction.addEventListener('click', resetGame);
-btnRestart.addEventListener('click', resetGame);
+function showConfirm() {
+    uiPause.classList.add('hidden');
+    uiConfirm.classList.remove('hidden');
+}
 
-btnDevMode.addEventListener('click', () => {
-    gameData.dev = !gameData.dev;
-    btnDevMode.classList.toggle('active', gameData.dev);
-    btnDevMode.innerText = `🛠️ DEV: ${gameData.dev ? 'ON' : 'OFF'}`;
-    saveGame();
-    updateHUD();
-    updateWorkshopUI();
+btnConfirmYes.addEventListener('click', () => {
+    uiConfirm.classList.add('hidden');
+    resetGame();
 });
+
+btnConfirmNo.addEventListener('click', () => {
+    uiConfirm.classList.add('hidden');
+    uiPause.classList.remove('hidden');
+});
+
+btnRestartAction.addEventListener('click', showConfirm);
+btnRestart.addEventListener('click', resetGame); // Direct reset on victory is okay or keep confirm?
 
 btnBuys.forEach(btn => {
     btn.addEventListener('click', () => {
         let id = btn.dataset.id;
         let cost = parseInt(btn.dataset.cost);
         
-        if (!gameData.upgrades[id] && (gameData.dev || gameData.coins >= cost)) {
-            if (!gameData.dev) gameData.coins -= cost;
+        if (!gameData.upgrades[id] && (gameData.coins >= cost)) {
+            gameData.coins -= cost;
             gameData.upgrades[id] = true;
             saveGame();
             updateStats();
@@ -858,9 +1026,11 @@ btnBuys.forEach(btn => {
             // Trigger Alert after some time
             if (id != "4") {
                 pendingMinigame = id;
-                setTimeout(() => {
+                if (alertTimeout) clearTimeout(alertTimeout);
+                alertTimeout = setTimeout(() => {
                     triggerMinigameAlert();
-                }, 8000 + Math.random() * 5000); 
+                    alertTimeout = null;
+                }, 2000 + Math.random() * 3000); 
             }
         }
     });
@@ -918,12 +1088,32 @@ function drawBackground() {
     ctx.globalAlpha = 1.0;
     let groundColor = gameData.upgrades[4] ? '#43a047' : (gameData.upgrades[3] ? '#66bb6a' : (gameData.upgrades[1] ? '#8d6e63' : '#5d4037'));
     
-    // Draw Sky Background (Canvas clearing handles part of it, but maybe we want a dedicated sky color?)
-    // The CSS gradients already handle the sky.
+    const isPlaying = (gameState === STATE.PLAYING);
+
+    // City Layer Parallax (Distant) - DRAW FIRST
+    if (isPlaying) {
+        bgOffset -= bgSpeed * 0.4;
+        if (bgOffset <= -cw) bgOffset = 0;
+    }
+    
+    for(let w=0; w<2; w++) {
+        for(let i=0; i<15; i++) {
+            let bWidth = 80 + (i * 25) % 60;
+            let bHeight = 150 + (i * 40) % 250;
+            let bx = w * cw + i * 140 + bgOffset;
+            let by = ch - ch*0.2 - bHeight;
+            
+            let buildingLayerHex = gameData.upgrades[4] ? '#1565c0' : (gameData.upgrades[2] ? '#3949ab' : '#263238');
+            ctx.fillStyle = buildingLayerHex;
+            ctx.globalAlpha = 0.15;
+            ctx.fillRect(bx, by, bWidth, bHeight);
+            ctx.globalAlpha = 1.0;
+        }
+    }
 
     // Draw Clouds
     cloudsArray.forEach(c => {
-        c.update();
+        if (isPlaying) c.update();
         c.draw();
     });
 
@@ -948,34 +1138,14 @@ function drawBackground() {
 
     // Background Elements
     housesArray.forEach(h => {
-        h.update();
+        if (isPlaying) h.update();
         h.draw();
     });
     
     treesArray.forEach(t => {
-        t.update();
+        if (isPlaying) t.update();
         t.draw();
     });
-
-    // City Layer Parallax (Distant)
-    bgOffset -= bgSpeed * 0.4;
-    if (bgOffset <= -cw) bgOffset = 0;
-    
-    // ... (rest of building logic is fine as distant layer)
-    for(let w=0; w<2; w++) {
-        for(let i=0; i<15; i++) {
-            let bWidth = 80 + (i * 25) % 60;
-            let bHeight = 150 + (i * 40) % 250;
-            let bx = w * cw + i * 140 + bgOffset;
-            let by = ch - ch*0.2 - bHeight;
-            
-            let buildingLayerHex = gameData.upgrades[4] ? '#1565c0' : (gameData.upgrades[2] ? '#3949ab' : '#263238');
-            ctx.fillStyle = buildingLayerHex;
-            ctx.globalAlpha = 0.15;
-            ctx.fillRect(bx, by, bWidth, bHeight);
-            ctx.globalAlpha = 1.0;
-        }
-    }
 }
 
 // Main Game Loop
@@ -993,8 +1163,8 @@ function gameLoop(timestamp) {
 
     if (gameState !== STATE.PLAYING && gameState !== STATE.UPGRADE && gameState !== STATE.PAUSE) return;
 
-    if (gameState === STATE.PAUSE) {
-        // Just keep drawing last frame or static bg
+    if (gameState === STATE.PAUSE || gameState === STATE.UPGRADE) {
+        // Stop animation completely
         ctx.clearRect(0, 0, cw, ch);
         drawBackground();
         player.draw();

@@ -30,16 +30,23 @@ body {
 
 /* Background states relying on sustainability levels */
 body.state-0 canvas {
-    background: linear-gradient(to bottom, #757F9A, #D7DDE8); /* Poluído */
+    background: linear-gradient(to bottom, #757F9A, #D7DDE8);
+    /* Poluído */
 }
+
 body.state-1 canvas {
-    background: linear-gradient(to bottom, #9faac2, #e6ecf5); /* Menos Poluído */
+    background: linear-gradient(to bottom, #9faac2, #e6ecf5);
+    /* Menos Poluído */
 }
+
 body.state-2 canvas {
-    background: linear-gradient(to bottom, #87CEEB, #E0F6FF); /* Quase Limpo */
+    background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
+    /* Quase Limpo */
 }
+
 body.state-3 canvas {
-    background: linear-gradient(to bottom, #4facfe, #00f2fe); /* Totalmente Sustentável */
+    background: linear-gradient(to bottom, #4facfe, #00f2fe);
+    /* Totalmente Sustentável */
 }
 
 #game-container {
@@ -85,8 +92,15 @@ canvas {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, -45%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
 
 .screen h1 {
@@ -97,7 +111,7 @@ canvas {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .screen h2 {
@@ -118,7 +132,9 @@ strong {
 }
 
 /* Buttons */
-.btn-primary, .btn-secondary, .hud-btn {
+.btn-primary,
+.btn-secondary,
+.hud-btn {
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -131,19 +147,22 @@ strong {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.btn-primary:hover, .btn-secondary:hover, .hud-btn:hover {
+.btn-primary:hover,
+.btn-secondary:hover,
+.hud-btn:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.btn-primary:active, .btn-secondary:active, .hud-btn:active {
+.btn-primary:active,
+.btn-secondary:active,
+.hud-btn:active {
     transform: translateY(1px);
 }
 
 .btn-secondary {
     background-color: var(--secondary-color);
-    margin-top: 20px;
 }
 
 .btn-secondary:hover {
@@ -167,6 +186,7 @@ strong {
 .hud-controls {
     display: flex;
     gap: 10px;
+    pointer-events: auto;
 }
 
 .alert-btn {
@@ -181,8 +201,15 @@ strong {
 }
 
 @keyframes pulseRed {
-    from { transform: scale(1); box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
-    to { transform: scale(1.1); box-shadow: 0 0 25px rgba(239, 68, 68, 0.9); }
+    from {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+    }
+
+    to {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.9);
+    }
 }
 
 .hud-item {
@@ -195,7 +222,7 @@ strong {
     font-size: 1.5rem;
     font-weight: 600;
     pointer-events: auto;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -206,7 +233,8 @@ strong {
 }
 
 #coin-count {
-    color: #fca5a5; /* Changes based on context via JS ideally, steady color here */
+    color: #fca5a5;
+    /* Changes based on context via JS ideally, steady color here */
     color: white;
 }
 
@@ -218,11 +246,11 @@ strong {
 .bar-container {
     flex: 1;
     height: 18px;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bar-fill {
@@ -230,7 +258,7 @@ strong {
     height: 100%;
     background: linear-gradient(90deg, #ef4444, #10b981);
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 #sus-text {
@@ -255,7 +283,7 @@ strong {
     overflow-y: auto;
     padding-right: 10px;
     scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) rgba(0,0,0,0.2);
+    scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0.2);
 }
 
 .upgrades-list::-webkit-scrollbar {
@@ -263,7 +291,7 @@ strong {
 }
 
 .upgrades-list::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
 
@@ -276,16 +304,16 @@ strong {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 15px;
     border-radius: 12px;
     text-align: left;
     transition: background 0.2s, transform 0.2s;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .upgrade-item:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     transform: translateX(4px);
 }
 
@@ -323,7 +351,7 @@ strong {
     font-size: 1rem;
     cursor: pointer;
     transition: transform 0.2s, filter 0.2s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     min-width: 90px;
 }
 
@@ -350,8 +378,15 @@ strong {
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 /* Minigame Styles */
@@ -383,8 +418,8 @@ strong {
 }
 
 .quiz-opt {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 15px;
     border-radius: 12px;
     cursor: pointer;
@@ -393,18 +428,28 @@ strong {
 }
 
 .quiz-opt:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     transform: translateX(5px);
 }
 
-.quiz-opt.correct {
-    background: rgba(16, 185, 129, 0.3);
-    border-color: #10b981;
+.quiz-opt.correct, .bin.correct {
+    background: #059669 !important;
+    border-color: #34d399 !important;
+    color: white !important;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+    transform: scale(1.05);
 }
 
-.quiz-opt.wrong {
-    background: rgba(239, 68, 68, 0.3);
-    border-color: #ef4444;
+.quiz-opt.wrong, .bin.wrong {
+    background: #dc2626 !important;
+    border-color: #f87171 !important;
+    color: white !important;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+    transform: scale(0.95);
+}
+
+.is-checking {
+    pointer-events: none !important;
 }
 
 /* Waste Sorting */
@@ -417,8 +462,8 @@ strong {
 
 .bin {
     flex: 1;
-    background: rgba(255,255,255,0.05);
-    border: 2px dashed rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 20px 10px;
     display: flex;
@@ -428,7 +473,7 @@ strong {
 }
 
 .bin:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     border-color: var(--primary-color);
 }
 
@@ -468,7 +513,7 @@ strong {
     position: absolute;
     width: 60px;
     height: 30px;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     border-radius: 50%;
     top: 60%;
     left: 50%;
@@ -485,7 +530,10 @@ strong {
 }
 
 @keyframes fallDown {
-    to { top: 55%; opacity: 0.8; }
+    to {
+        top: 35%;
+        opacity: 0.8;
+    }
 }
 
 .plant-anim {
@@ -498,8 +546,13 @@ strong {
 }
 
 @keyframes growBody {
-    from { transform: translateX(-50%) scale(0); }
-    to { transform: translateX(-50%) scale(1); }
+    from {
+        transform: translateX(-50%) scale(0);
+    }
+
+    to {
+        transform: translateX(-50%) scale(1);
+    }
 }
 
 /* Pause Menu */
@@ -514,24 +567,7 @@ strong {
     font-size: 1.5rem;
 }
 
-.btn-dev {
-    background: #1e293b;
-    color: #fca5a5;
-    border: 1px dashed #fca5a5;
-    padding: 10px;
-    border-radius: 12px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-}
 
-.btn-dev.active {
-    background: #450a0a;
-    color: #f87171;
-    border: 1px solid #ef4444;
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
-}
 
 @media (max-width: 768px) {
     #hud {
@@ -539,18 +575,22 @@ strong {
         align-items: center;
         gap: 15px;
     }
+
     .hud-item {
         font-size: 1.2rem;
         width: 100%;
         justify-content: center;
     }
+
     .sustainability {
         min-width: 100%;
     }
+
     .screen {
         padding: 25px;
         width: 95%;
     }
+
     .screen h1 {
         font-size: 2.2rem;
     }

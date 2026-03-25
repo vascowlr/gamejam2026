@@ -41,7 +41,18 @@
                 <button id="btn-resume" class="btn-primary" data-i18n="btn_resume">Continuar</button>
                 <button id="btn-restart-action" class="btn-secondary" data-i18n="btn_restart">Reiniciar</button>
                 <button id="btn-toggle-lang" class="btn-secondary">🌍 Language: EN</button>
-                <button id="btn-dev-mode" class="btn-dev">🛠️ DEV: OFF</button>
+            </div>
+        </div>
+
+        <!-- Confirmation Screen -->
+        <div id="screen-confirm" class="screen hidden">
+            <div class="menu-box">
+                <h2 data-i18n="confirm_title">Tem certeza?</h2>
+                <p data-i18n="confirm_desc">Todo o seu progresso será perdido!</p>
+                <div class="menu-options" style="flex-direction: row; gap: 10px; justify-content: center;">
+                    <button id="btn-confirm-yes" class="btn-secondary" style="flex: 1; min-width: 140px;" data-i18n="confirm_yes">Sim, Reiniciar</button>
+                    <button id="btn-confirm-no" class="btn-primary" style="flex: 1; min-width: 140px;" data-i18n="confirm_no">Não, Voltar</button>
+                </div>
             </div>
         </div>
 
@@ -58,7 +69,10 @@
             <h1 data-i18n="title">EcoDrive 🚗</h1>
             <p data-i18n="start_desc">Sua missão é transformar este carro antigo e altamente poluente em um modelo sustentável.</p>
             <p><strong data-i18n="start_instr">Clique nas moedas para coletá-las e use a oficina!</strong></p>
-            <button id="btn-start" class="btn-primary" data-i18n="btn_start">Começar a Limpar o Mundo</button>
+            <div class="menu-options" style="margin-top: 30px;">
+                <button id="btn-start" class="btn-primary" data-i18n="btn_start">Começar a Limpar o Mundo</button>
+                <button id="btn-toggle-lang-start" class="btn-secondary">🌍 Idioma: Português</button>
+            </div>
         </div>
 
         <!-- Workshop Screen -->
